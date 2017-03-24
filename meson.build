@@ -15,8 +15,12 @@ cc = meson.get_compiler('c')
 
 libgio_dep = dependency('gio-2.0', version: '>= 2.34.0')
 libgmodule_dep = dependency('gmodule-2.0')
-libssl_dep = dependency('openssl', version: '>= 0.9.8',
-                        required: get_option('with-ssl'))
+if cc.get_id() == 'msvc'
+  libssl_dep = cc.find_library('libeay32')
+else
+  libssl_dep = dependency('openssl', version: '>= 0.9.8',
+                          required: get_option('with-ssl'))
+endif
 
 config_h = configuration_data()
 config_h.set_quoted('PACKAGE_VERSION', meson.project_version())
@@ -116,10 +120,9 @@ subdir('src')
 if get_option('with-plugin')
   subdir('plugins')
 endif
-subdir('data')
-# FIXME: build xgettext
-if host_machine.system() != 'windows'
-  subdir('po')
-endif
+if cc.get_id() != 'msvc'
+  subdir('data')
+  subdir('po') # FIXME: build xgettext
 
-meson.add_install_script('meson_post_install.py')
+  meson.add_install_script('meson_post_install.py')
+endif

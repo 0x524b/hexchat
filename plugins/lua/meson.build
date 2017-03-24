@@ -1,4 +1,8 @@
-lua_dep = dependency('luajit')
+if cc.get_id() == 'msvc'
+  lua_dep = cc.find_library('lua51')
+else
+  lua_dep = dependency('luajit')
+endif
 
 shared_module('lua', 'lua.c',
   dependencies: [libgio_dep, hexchat_plugin_dep, lua_dep],
