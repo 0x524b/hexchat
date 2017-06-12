@@ -49,6 +49,19 @@ perl_cflags += [
   '-include', meson.build_root() + '/config.h'
 ]
 
+if not cc.links('''
+#define PERL_NO_INLINE_FUNCTIONS
+#include <EXTERN.h>
+#include <perl.h>
+
+int main(void) {
+  PerlInterpreter *my_perl = perl_alloc();
+  return 0;
+}
+''', args: perl_cflags + perl_ldflags)
+  error('found perl not suitable for plugin')
+endif
+
 shared_module('perl',
   sources: ['perl.c', hexchat_perl_module, irc_perl_module],
   dependencies: [libgio_dep, hexchat_plugin_dep],

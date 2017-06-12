@@ -1,8 +1,8 @@
 python_opt = get_option('with-python')
-if python_opt == '3'
-  python_dep = dependency('python3', version: '>= 3.3')
+if python_opt.startswith('python3')
+  python_dep = dependency(python_opt, version: '>= 3.3')
 else
-  python_dep = dependency('python2', version: '>= 2.7')
+  python_dep = dependency(python_opt, version: '>= 2.7')
 endif
 
 shared_module('python', 'python.c',
