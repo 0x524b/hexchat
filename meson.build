@@ -124,5 +124,7 @@ if cc.get_id() != 'msvc'
   subdir('data')
   subdir('po') # FIXME: build xgettext
 
-  meson.add_install_script('meson_post_install.py')
+  meson.add_install_script('meson_post_install.py',
+    '@0@'.format(get_option('with-theme-manager'))
+  )
 endif
