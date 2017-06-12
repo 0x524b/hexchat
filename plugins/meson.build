@@ -22,7 +22,7 @@ if get_option('with-fishlim')
   subdir('fishlim')
 endif
 
-if get_option('with-lua')
+if get_option('with-lua') != 'false'
   subdir('lua')
 endif
 

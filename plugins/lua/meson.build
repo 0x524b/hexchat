@@ -1,7 +1,7 @@
 if cc.get_id() == 'msvc'
   lua_dep = cc.find_library('lua51')
 else
-  lua_dep = dependency('luajit')
+  lua_dep = dependency(get_option('with-lua'))
 endif
 
 shared_module('lua', 'lua.c',
